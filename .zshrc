@@ -17,6 +17,7 @@ alias open='xdg-open'
 alias ..='cd ..'
 alias ls='ls -a --color=auto'
 alias n='nvim'
+alias lg='lazygit'
 function c(){clear}
 function tt() {
   read -r "no?Enter the theme number: "
@@ -24,6 +25,38 @@ function tt() {
   gsettings set org.gnome.desktop.background picture-uri-dark file:///home/sugam/.config/wallpaper/$no.png
   clear
   neofetch
+}
+twork() {
+    local session_name="work" 
+
+    local -A windows=(
+        ["1ytf"]="~/Desktop/files/sugam/youtube_frontend"
+        ["2ytb"]="~/Desktop/files/sugam/youtube_backend"
+        ["3blog"]="~/Desktop/files/sugam/BloggerBlog"
+    )
+
+    # Check if the session already exists
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+        echo "Session '$session_name' already exists. Attaching..."
+        tmux attach-session -t "$session_name"
+        return
+    fi
+
+    # Create a new session but don't attach
+    tmux new-session -d -s "$session_name"
+
+    # Create additional windows
+    for window_name dir in ${(kv)windows}; do
+        tmux new-window -t "$session_name" -n "$window_name" -c "$dir"
+        tmux send-keys -t "$session_name:$window_name" "cd $dir" C-m 
+    done
+
+    # Rename the default first window
+    tmux rename-window -t "$session_name:0" "main"
+
+    # Select the first window and attach
+    tmux select-window -t "$session_name:0"
+    tmux attach-session -t "$session_name"
 }
 kk() {
   read -r "no?Enter the theme number: "
