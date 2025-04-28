@@ -5,30 +5,38 @@ vim.cmd("set shiftwidth=1")
 vim.cmd("set smartindent")
 vim.cmd("set number")
 vim.cmd("set relativenumber")
-vim.cmd("set scrolloff=7")
+vim.cmd("set scrolloff=10")
 vim.g.mapleader = " "
-vim.g.background = "light"
 
+vim.opt.wrap = true      -- Wrap long lines
+vim.opt.linebreak = true -- Break lines at word boundaries
+vim.opt.breakindent = true
 vim.opt.swapfile = false
 
+vim.keymap.set("n", "<leader>n", "<Cmd>ToggleTerm<CR>", { noremap = true, silent = true })
+vim.keymap.set("t", "<leader>n", "<Cmd>ToggleTerm<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>w", ":wa<CR>")
 -- Navigate vim panes better
 vim.keymap.set("n", "<leader>t", ":colorscheme ")
 vim.keymap.set("n", "<c-k>", ":wincmd k<CR>")
 vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
 vim.keymap.set("n", "<c-h>", ":wincmd h<CR>")
 vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
-vim.keymap.set("n", "<leader><CR>", ":so ~/.config/nvim/init.lua<CR>")
-vim.keymap.set("n", "<leader>w", ":wa<CR>")
 
 -- coustom usecase
 vim.keymap.set("n", "<C-a>", "ggVG", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-z>", "<C-o>u", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-d>", "<C-o>diw", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-h>", "<C-o>b", { noremap = true, silent = true }) -- Jump to the start of the previous word
-vim.keymap.set("i", "<C-j>", "<C-o>j", { noremap = true, silent = true }) -- Jump to the start of the previous word
-vim.keymap.set("i", "<C-k>", "<C-o>k", { noremap = true, silent = true }) -- Jump to the start of the previous word
-vim.keymap.set("i", "<C-l>", "<C-o>e<C-o>l", { noremap = true, silent = true }) -- Jump to the end of the current/next word
+vim.keymap.set("i", "<C-h>", "<left>", { noremap = true, silent = true })  -- Jump to the start of the previous word
+vim.keymap.set("i", "<C-j>", "<down>", { noremap = true, silent = true })  -- Jump to the start of the previous word
+vim.keymap.set("i", "<C-k>", "<up>", { noremap = true, silent = true })    -- Jump to the start of the previous word
+vim.keymap.set("i", "<C-l>", "<right>", { noremap = true, silent = true }) -- Jump to the end of the current/next word
 vim.keymap.set("i", "<C-CR>", "<C-o>o", { noremap = true, silent = true }) -- Jump to the end of the current/next word
+
+vim.keymap.set("n", "j", "gj", { noremap = true, silent = true })
+vim.keymap.set("n", "k", "gk", { noremap = true, silent = true })
+
+-- Ctrl+Delete to delete the word to the right
+vim.keymap.set("i", "<C-Del>", "<C-o>dw", { noremap = true, silent = true })
 
 -- Move lines up and down in NORMAL mode
 vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { noremap = true, silent = true }) -- Move line down
@@ -39,10 +47,10 @@ vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true }) -- Move selection up
 
 vim.keymap.set(
-	"n",
-	"<leader>ra",
-	[[:%s/\<<C-r><C-w>\>//g<Left><Left>]],
-	{ noremap = true, silent = false, desc = "Replace all occurrences of the current word" }
+  "n",
+  "<leader>ra",
+  [[:%s/\<<C-r><C-w>\>//g<Left><Left>]],
+  { noremap = true, silent = false, desc = "Replace all occurrences of the current word" }
 )
 
 --
@@ -52,13 +60,14 @@ vim.opt.clipboard = "unnamedplus"
 
 -- Enable folding
 vim.o.foldmethod = "indent" -- Fold based on indentation (great for HTML/JSX)
-vim.o.foldlevel = 98 -- Start with all folds open
-vim.o.foldenable = true -- Enable folding by default
+vim.o.foldlevel = 98        -- Start with all folds open
+vim.o.foldenable = true     -- Enable folding by default
 
 vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next Buffer" })
 vim.keymap.set("n", "<leader>bp", ":bprev<CR>", { desc = "Previous Buffer" })
 vim.keymap.set("n", "<leader>bl", ":buffers<CR>", { desc = "List Buffers" })
 vim.keymap.set("n", "<leader>bb", ":buffer<Space>", { desc = "Switch Buffer" })
+vim.keymap.set("n", "<leader>m", ":Mason<CR>")
 
 vim.scriptencoding = "utf-8"
 vim.opt.encoding = "utf-8"
@@ -79,10 +88,8 @@ vim.opt.scrolloff = 10
 vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
 vim.opt.smarttab = true
-vim.opt.breakindent = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
-vim.opt.wrap = false
 
 vim.opt.backspace = { "start", "eol", "indent" }
 vim.opt.path:append({ "**" })
